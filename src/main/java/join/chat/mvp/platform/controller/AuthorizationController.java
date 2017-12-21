@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthorizationController {
 
     @GetMapping("/sign-up")
-    public void signUp() {
+    public String signUp() {
+        return "Hello world !!!";
     }
 }
