@@ -1,0 +1,101 @@
+openapi: 3.0.0
+info:
+  title: Join.Chat
+  description: The Communication Network Platform
+  license:
+    name: GNU Lesser General Public License v3.0
+    url: https://www.gnu.org/licenses/lgpl-3.0.en.html
+  version: 1.0.0
+
+externalDocs:
+  description: "Find out more about Join.Chat"
+  url: "https://docs.join.chat"
+
+servers:
+  - url: https://api.join.chat/v1
+    description: Main (production) server
+  - url: https://api.internal.join.chat/v1
+    description: Internal staging server for testing
+
+tags:
+  - name: authorization
+    description: Authentication and Authorization Methods
+    externalDocs:
+      url: http://docs.join.chat/api/v1/authorization.html
+
+paths:
+  /authorization/get-code:
+    get:
+      tags:
+        - authorization
+      summary: Get a verification code
+      description: Sends an SMS with a verification code to the specified number
+      parameters:
+        - in: query
+          name: phone
+          required: true
+          schema:
+            type: string
+          description: Phone number where to send the verification code
+      responses:
+        '200':
+          description: Request successfully registered
+        '500':
+          description: Internal error on the server
+        '502':
+          description: The application is unavailable
+  /authorization/verification:
+    post:
+      tags:
+        - authorization
+      summary: Verification a code
+      description: Check the correspondence sent and transmitted code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/VerificationCode'
+      responses:
+        '201':
+          description: The code successfully verified
+        '500':
+          description: Internal error on the server
+        '502':
+          description: The application is unavailable
+  /authorization/sign-up:
+    post:
+      tags:
+        - authorization
+      summary: Code validation for validity
+      description: Check the correspondence sent and transmitted code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/SignUp'
+      responses:
+        '201':
+          description: The new account successfully created
+        '500':
+          description: Internal error on the server
+        '502':
+          description: The application is unavailable
+
+components:
+  schemas:
+    VerificationCode:
+      properties:
+        phone:
+          type: string
+        code:
+          type: string
+    SignUp:
+      properties:
+        phone:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
