@@ -15,14 +15,14 @@ import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 @Service
-public class TwilioService {
-    private static final Logger logger = LoggerFactory.getLogger(TwilioService.class);
+public class ShortMessageServiceImpl implements ShortMessageService {
+    private static final Logger logger = LoggerFactory.getLogger(ShortMessageServiceImpl.class);
 
     private final MessageSource messageSource;
     private final TwilioConfiguration configuration;
 
     @Autowired
-    public TwilioService(final MessageSource messageSource, final TwilioConfiguration configuration) {
+    public ShortMessageServiceImpl(final MessageSource messageSource, final TwilioConfiguration configuration) {
 
         this.messageSource = messageSource;
         this.configuration = configuration;
@@ -33,12 +33,14 @@ public class TwilioService {
     }
 
     @Async
+    @Override
     public CompletableFuture<String> pushVerificationCode(final String number, final String code)
             throws InterruptedException {
         return pushVerificationCode(number, code, null);
     }
 
     @Async
+    @Override
     public CompletableFuture<String> pushVerificationCode(final String number, final String code, final Locale locale)
             throws InterruptedException {
         final String phoneFrom = this.configuration.getPhoneNumber();
