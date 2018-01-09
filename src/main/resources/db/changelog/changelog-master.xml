@@ -8,9 +8,13 @@
 
     <changeSet id="1" author="e.zhuravlev">
         <comment>A initial database preset</comment>
+
         <createTable tableName="account">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="phone" type="varchar(15)">
+                <constraints nullable="false"/>
             </column>
             <column name="username" type="varchar(32)">
                 <constraints nullable="false"/>
