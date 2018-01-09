@@ -59,6 +59,8 @@ paths:
       responses:
         '201':
           description: The code successfully verified
+        '400':
+          description: The bad request
         '500':
           description: Internal error on the server
         '502':
@@ -78,6 +80,8 @@ paths:
       responses:
         '201':
           description: The new account successfully created
+        '400':
+          description: The bad request
         '500':
           description: Internal error on the server
         '502':
