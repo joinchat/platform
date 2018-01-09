@@ -26,6 +26,7 @@
         <!-- Additional versions for packages -->
         <jjwt.version>0.8.0</jjwt.version>
         <hikari.version>2.7.2</hikari.version>
+        <twilio.version>7.17.0</twilio.version>
         <liquibase.version>3.5.3</liquibase.version>
         <postgresql.version>9.4.1212</postgresql.version>
     </properties>
@@ -35,6 +36,11 @@
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>${hikari.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.twilio.sdk</groupId>
+            <artifactId>twilio</artifactId>
+            <version>${twilio.version}</version>
         </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>
