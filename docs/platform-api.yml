@@ -52,6 +52,7 @@ paths:
           description: Internal error on the server
         '502':
           description: The application is unavailable
+
   /authorization/verification:
     post:
       tags:
@@ -77,11 +78,12 @@ paths:
           description: Internal error on the server
         '502':
           description: The application is unavailable
+
   /authorization/sign-up/{guid}:
     post:
       tags:
         - authorization
-      summary: Code validation for validity
+      summary: Sign-Up
       description: Check the correspondence sent and transmitted code
       parameters:
         - in: path
@@ -110,8 +112,60 @@ paths:
         '502':
           description: The application is unavailable
 
+  /authorization/sign-in:
+    post:
+      tags:
+        - authorization
+      summary: Code validation for validity
+      description: Check the correspondence sent and transmitted code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorizationEntity'
+      responses:
+        '200':
+          description: The new account successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenEntity'
+        '500':
+          description: Internal error on the server
+        '502':
+          description: The application is unavailable
+/authorization/refresh-token:
+    post:
+      tags:
+        - authorization
+      summary: Code validation for validity
+      description: Check the correspondence sent and transmitted code
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: HTTP header advertises which languages the client is able to understand
+
+      responses:
+        '200':
+          description: The new account successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenEntity'
+        '500':
+          description: Internal error on the server
+        '502':
+          description: The application is unavailable
 components:
   schemas:
+    TokenEntity:
+      properties:
+        token:
+          type: string
+
     GuideEntity:
       properties:
         guid:
