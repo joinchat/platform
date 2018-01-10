@@ -11,5 +11,5 @@ public interface AccountService {
 
     Optional<Account> findByUsername(String username);
 
-    void signUp(final String guid, final RegistrationEntity essential);
+    void signUp(final String phone, final RegistrationEntity essential);
 }

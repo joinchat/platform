@@ -82,7 +82,21 @@ public class AuthorizationController {
     @PostMapping("/sign-up/{guid}")
     public ResponseEntity<?> signUp(@PathVariable String guid,
                                     @Valid @RequestBody RegistrationEntity essential) {
-        accountService.signUp(guid, essential);
+
+        final Optional<Validation> validation = verificationService.getByGuid(guid);
+        if (!validation.isPresent()) {
+            logger.info("Can't SignUp, GUID is wrong");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        final String phone = validation.get().getNumber();
+        final Optional<Account> account = accountService.findByPhone(phone);
+        if (account.isPresent()) {
+            logger.info("Can't send validation code, phone number already registered");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        }
+
+        accountService.signUp(phone, essential);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 

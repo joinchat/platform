@@ -37,10 +37,11 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public void signUp(final String guid, final RegistrationEntity essential) {
+    public void signUp(final String phone, final RegistrationEntity essential) {
         final Account account = new Account();
         final PasswordEncoder passwordEncoder = passwordConfiguration.passwordEncoder();
 
+        account.setPhone(phone);
         account.setUsername(essential.getUsername());
         account.setPassword(passwordEncoder.encode(essential.getPassword()));
 
