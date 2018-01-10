@@ -10,7 +10,7 @@
         <comment>A initial database preset</comment>
 
         <createTable tableName="account">
-            <column name="id" type="int" autoIncrement="true">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="phone" type="varchar(15)">
@@ -20,6 +20,17 @@
                 <constraints nullable="false"/>
             </column>
             <column name="password" type="varchar(128)"/>
+        </createTable>
+        <createTable tableName="validation">
+            <column name="code" type="varchar(8)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number" type="varchar(15)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdAt" type="bigint">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 </databaseChangeLog>

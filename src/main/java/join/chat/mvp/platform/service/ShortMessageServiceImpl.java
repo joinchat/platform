@@ -46,7 +46,7 @@ public class ShortMessageServiceImpl implements ShortMessageService {
         final String phoneTo = "+" + number;
         final String phoneFrom = this.configuration.getPhoneNumber();
         final String messageBody = messageSource.getMessage("validation_code",
-                null, locale) + code;
+                null, locale) + " " + code;
 
         final Message message = Message.creator(new PhoneNumber(phoneTo),
                 new PhoneNumber(phoneFrom), messageBody).create();
