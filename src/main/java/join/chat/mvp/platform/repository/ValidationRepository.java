@@ -6,5 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ValidationRepository extends JpaRepository<Validation, Long> {
     Validation findByCode(String code);
 
+    Validation findByGuid(String guid);
+
     Validation findByNumber(String number);
 }

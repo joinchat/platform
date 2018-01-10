@@ -5,24 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotNull;
 
-public class LoginEntity {
+public class GuidEntity {
     @NotNull
-    private final String username;
-    @NotNull
-    private final String password;
+    private final String guid;
 
     @JsonCreator
-    public LoginEntity(@JsonProperty("username") String username,
-                       @JsonProperty("password") String password) {
-        this.username = username;
-        this.password = password;
+    public GuidEntity(@JsonProperty("guid") String guid) {
+        this.guid = guid;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
+    public String getGuid() {
+        return guid;
     }
 }

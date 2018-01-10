@@ -3,9 +3,11 @@ package join.chat.mvp.platform.controller;
 import io.jsonwebtoken.Jwts;
 import join.chat.mvp.platform.component.JWTTokenFactory;
 import join.chat.mvp.platform.configuration.JWTConfiguration;
+import join.chat.mvp.platform.essential.GuidEntity;
 import join.chat.mvp.platform.essential.RegistrationEntity;
 import join.chat.mvp.platform.essential.ValidationEntity;
 import join.chat.mvp.platform.model.Account;
+import join.chat.mvp.platform.model.Validation;
 import join.chat.mvp.platform.service.AccountService;
 import join.chat.mvp.platform.service.VerificationService;
 import org.slf4j.Logger;
@@ -68,17 +70,20 @@ public class AuthorizationController {
     }
 
     @PostMapping("/verification")
-    public ResponseEntity<?> checkVerificationCode(@Valid @RequestBody ValidationEntity essential) {
-        if (!verificationService.verifyVerificationCode(essential.getCode(), essential.getPhone())) {
+    public ResponseEntity<GuidEntity> checkVerificationCode(@Valid @RequestBody ValidationEntity essential) {
+        final Validation validation = verificationService.verifyVerificationCode(essential.getCode(),
+                essential.getPhone());
+        if (validation == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body(new GuidEntity(validation.getGuid()));
     }
 
-    @PostMapping("/sign-up")
-    public ResponseEntity<?> signUp(@Valid @RequestBody RegistrationEntity essential) {
-        accountService.signUp(essential);
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+    @PostMapping("/sign-up/{guid}")
+    public ResponseEntity<?> signUp(@PathVariable String guid,
+                                    @Valid @RequestBody RegistrationEntity essential) {
+        accountService.signUp(guid, essential);
+        return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 
     @GetMapping("/refresh-token")

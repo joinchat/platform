@@ -44,13 +44,21 @@ public class VerificationServiceImpl implements VerificationService {
     }
 
     @Override
-    public boolean verifyVerificationCode(final String code, final String number) {
+    public Validation verifyVerificationCode(final String code, final String number) {
         final Validation validation = validationRepository.findByNumber(number);
-        if (validation != null && Objects.equals(validation.getCode(), code)) {
-            final Long expirationTime = validation.getCreatedAt() +
-                    validationConfiguration.getAuthTokenTimeout() * 1000;
-            return System.currentTimeMillis() < expirationTime;
+        if (validation == null || !Objects.equals(validation.getCode(), code)) {
+            return null;
         }
-        return false;
+
+        final Long expirationTime = validation.getCreatedAt() +
+                validationConfiguration.getAuthTokenTimeout() * 1000;
+        if (System.currentTimeMillis() > expirationTime) {
+            return null;
+        }
+
+        // Update current time for temporary token
+        validation.setCreatedAt(System.currentTimeMillis());
+        validationRepository.saveAndFlush(validation);
+        return validation;
     }
 }

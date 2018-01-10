@@ -46,7 +46,7 @@ paths:
       responses:
         '200':
           description: Request successfully registered
-        '409':
+        '400':
           description: Bad Request
         '409':
           description: Phone alredy registred
@@ -65,28 +65,39 @@ paths:
         content:
           application/json:
             schema: 
-              $ref: '#/components/schemas/VerificationCode'
+              $ref: '#/components/schemas/VerificationEnity'
       responses:
         '200':
           description: The code successfully verified
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuideEntity'
         '400':
           description: The bad request or code isn't valid
         '500':
           description: Internal error on the server
         '502':
           description: The application is unavailable
-  /authorization/sign-up:
+  /authorization/sign-up/{guid}:
     post:
       tags:
         - authorization
       summary: Code validation for validity
       description: Check the correspondence sent and transmitted code
+      parameters:
+        - in: path
+          name: guid
+          required: true
+          schema:
+            type: string
+          description: GUID from verification method      
       requestBody:
         required: true
         content:
           application/json:
             schema: 
-              $ref: '#/components/schemas/SignUp'
+              $ref: '#/components/schemas/AuthorizationEntity'
       responses:
         '201':
           description: The new account successfully created
@@ -99,16 +110,20 @@ paths:
 
 components:
   schemas:
-    VerificationCode:
+    GuideEntity:
+      properties:
+        guid:
+          type: string
+
+    VerificationEnity:
       properties:
         phone:
           type: string
         code:
           type: string
-    SignUp:
+
+    AuthorizationEntity:
       properties:
-        phone:
-          type: string
         username:
           type: string
         password:
