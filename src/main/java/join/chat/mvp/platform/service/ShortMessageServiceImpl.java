@@ -43,11 +43,16 @@ public class ShortMessageServiceImpl implements ShortMessageService {
     @Override
     public CompletableFuture<String> pushVerificationCode(final String number, final String code, final Locale locale)
             throws InterruptedException {
+        final String phoneTo = "+" + number;
         final String phoneFrom = this.configuration.getPhoneNumber();
-        final Message message = Message.creator(new PhoneNumber(number), new PhoneNumber(phoneFrom),
-                code + " " + messageSource.getMessage("validation_code", null, locale)).create();
+        final String messageBody = messageSource.getMessage("validation_code",
+                null, locale) + " " + code;
 
-        logger.info("Sending verification code: {0} to {1} from {2}", code, number, phoneFrom);
+        final Message message = Message.creator(new PhoneNumber(phoneTo),
+                new PhoneNumber(phoneFrom), messageBody).create();
+
+        logger.info(String.format("Sending verification code: %s to %s from %s", code,
+                phoneTo, phoneFrom));
         return CompletableFuture.completedFuture(message.getSid());
     }
 }

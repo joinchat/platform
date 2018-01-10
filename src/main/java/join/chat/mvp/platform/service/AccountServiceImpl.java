@@ -24,7 +24,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Optional<Account> findByPhone(String phone) {
-        final Account account = accountRepository.findByUsername(phone);
+        final Account account = accountRepository.findByPhone(phone);
         return account != null ? Optional.of(account) : Optional.empty();
     }
 

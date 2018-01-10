@@ -3,8 +3,12 @@ package join.chat.mvp.platform.essential;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.NotNull;
+
 public class LoginEntity {
+    @NotNull
     private final String username;
+    @NotNull
     private final String password;
 
     @JsonCreator

@@ -37,9 +37,19 @@ paths:
           schema:
             type: string
           description: Phone number where to send the verification code
+        - in: header
+          name: Accept-Language
+          required: true
+          schema:
+            type: string
+          description: HTTP header advertises which languages the client is able to understand
       responses:
         '200':
           description: Request successfully registered
+        '409':
+          description: Bad Request
+        '409':
+          description: Phone alredy registred
         '500':
           description: Internal error on the server
         '502':
@@ -57,10 +67,10 @@ paths:
             schema: 
               $ref: '#/components/schemas/VerificationCode'
       responses:
-        '201':
+        '200':
           description: The code successfully verified
         '400':
-          description: The bad request
+          description: The bad request or code isn't valid
         '500':
           description: Internal error on the server
         '502':
