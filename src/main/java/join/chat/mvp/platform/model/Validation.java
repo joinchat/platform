@@ -16,7 +16,7 @@ public class Validation {
     @Column(name = "number", length = 15)
     private String number;
 
-    @Column(name = "createdAt", length = 128)
+    @Column(name = "created_at")
     private Long createdAt;
 
     public Validation() {
