@@ -4,6 +4,7 @@ import io.jsonwebtoken.Jwts;
 import join.chat.mvp.platform.component.JWTTokenFactory;
 import join.chat.mvp.platform.configuration.JWTConfiguration;
 import join.chat.mvp.platform.essential.RegistrationEntity;
+import join.chat.mvp.platform.essential.ValidationEntity;
 import join.chat.mvp.platform.model.Account;
 import join.chat.mvp.platform.service.AccountService;
 import join.chat.mvp.platform.service.VerificationService;
@@ -67,12 +68,11 @@ public class AuthorizationController {
     }
 
     @PostMapping("/verification")
-    public ResponseEntity<?> checkVerificationCode(@RequestParam("phone") String phone,
-                                                   @RequestHeader("Accept-Language") Locale locale) {
-        if (StringUtils.isEmpty(phone)) {
-            throw new IllegalArgumentException("Can't send validation code, phone number is wrong");
+    public ResponseEntity<?> checkVerificationCode(@Valid @RequestBody ValidationEntity essential) {
+        if (!verificationService.verifyVerificationCode(essential.getCode(), essential.getPhone())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     @PostMapping("/sign-up")

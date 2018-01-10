@@ -1,6 +1,7 @@
 package join.chat.mvp.platform.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "validation")

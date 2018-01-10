@@ -67,10 +67,10 @@ paths:
             schema: 
               $ref: '#/components/schemas/VerificationCode'
       responses:
-        '201':
+        '200':
           description: The code successfully verified
         '400':
-          description: The bad request
+          description: The bad request or code isn't valid
         '500':
           description: Internal error on the server
         '502':
