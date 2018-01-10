@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface AccountService {
     Optional<Account> findByPhone(String phone);
+
     Optional<Account> findByUsername(String username);
-    void signUp(RegistrationEntity essential);
+
+    void signUp(final RegistrationEntity essential);
 }

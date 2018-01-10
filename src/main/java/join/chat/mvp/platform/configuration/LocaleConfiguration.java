@@ -17,11 +17,11 @@ public class LocaleConfiguration {
         return slr;
     }
 
-    @Bean
-    public ResourceBundleMessageSource messageSource() {
-        ResourceBundleMessageSource source = new ResourceBundleMessageSource();
-        source.setBasenames("i18n/messages");  // name of the resource bundle
-        source.setUseCodeAsDefaultMessage(true);
-        return source;
-    }
+//    @Bean
+//    public ResourceBundleMessageSource messageSource() {
+//        ResourceBundleMessageSource source = new ResourceBundleMessageSource();
+//        source.setBasenames("classpath:/i18n/messages");  // name of the resource bundle
+//        source.setUseCodeAsDefaultMessage(true);
+//        return source;
+//    }
 }

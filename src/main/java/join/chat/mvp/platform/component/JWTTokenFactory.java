@@ -24,7 +24,7 @@ public class JWTTokenFactory {
         this.jwtConfiguration = jwtConfiguration;
     }
 
-    String getToken(final User user) {
+    public String getToken(final User user) {
         final Claims claims = Jwts.claims().setSubject(user.getUsername());
         final long issuedAt = System.currentTimeMillis();
         final long expiration = issuedAt + jwtConfiguration.getTokenExpirationTime() * JWT_ONE_MINUTE;
