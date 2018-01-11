@@ -9,7 +9,7 @@ public class ValidationConfiguration {
     /**
      * Verification Token timeout.
      */
-    private Long authTokenTimeout ;
+    private Long authTokenTimeout;
 
     public Long getAuthTokenTimeout() {
         return authTokenTimeout;

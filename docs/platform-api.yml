@@ -46,14 +46,13 @@ paths:
       responses:
         '200':
           description: Request successfully registered
-        '409':
+        '400':
           description: Bad Request
-        '409':
-          description: Phone alredy registred
         '500':
           description: Internal error on the server
         '502':
           description: The application is unavailable
+
   /authorization/verification:
     post:
       tags:
@@ -65,17 +64,55 @@ paths:
         content:
           application/json:
             schema: 
-              $ref: '#/components/schemas/VerificationCode'
+              $ref: '#/components/schemas/VerificationEnity'
       responses:
         '200':
           description: The code successfully verified
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuideEntity'
         '400':
           description: The bad request or code isn't valid
         '500':
           description: Internal error on the server
         '502':
           description: The application is unavailable
-  /authorization/sign-up:
+
+  /authorization/sign-up/{guid}:
+    post:
+      tags:
+        - authorization
+      summary: Sign-Up
+      description: Check the correspondence sent and transmitted code
+      parameters:
+        - in: path
+          name: guid
+          required: true
+          schema:
+            type: string
+          description: GUID from verification method      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/AuthorizationEntity'
+      responses:
+        '201':
+          description: The new account successfully created
+        '400':
+          description: The bad request
+        '404':
+          description: The bad GUID
+        '409':
+          description: Phone alredy registred
+        '500':
+          description: Internal error on the server
+        '502':
+          description: The application is unavailable
+
+  /authorization/sign-in:
     post:
       tags:
         - authorization
@@ -85,30 +122,64 @@ paths:
         required: true
         content:
           application/json:
-            schema: 
-              $ref: '#/components/schemas/SignUp'
+            schema:
+              $ref: '#/components/schemas/AuthorizationEntity'
       responses:
-        '201':
+        '200':
           description: The new account successfully created
-        '400':
-          description: The bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenEntity'
         '500':
           description: Internal error on the server
         '502':
           description: The application is unavailable
+/authorization/refresh-token:
+    post:
+      tags:
+        - authorization
+      summary: Code validation for validity
+      description: Check the correspondence sent and transmitted code
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: HTTP header advertises which languages the client is able to understand
 
+      responses:
+        '200':
+          description: The new account successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenEntity'
+        '500':
+          description: Internal error on the server
+        '502':
+          description: The application is unavailable
 components:
   schemas:
-    VerificationCode:
+    TokenEntity:
+      properties:
+        token:
+          type: string
+
+    GuideEntity:
+      properties:
+        guid:
+          type: string
+
+    VerificationEnity:
       properties:
         phone:
           type: string
         code:
           type: string
-    SignUp:
+
+    AuthorizationEntity:
       properties:
-        phone:
-          type: string
         username:
           type: string
         password:
